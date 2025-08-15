@@ -768,7 +768,7 @@ class Schema(BaseSchema):
                             result = cast("Awaitable[GraphQLExecutionResult]", result)  # type: ignore[redundant-cast]
                             ensure_future(result).cancel()
                             raise RuntimeError(  # noqa: TRY301
-                                "GraphQL execution failed to complete synchronously."
+                                f"GraphQL execution failed to complete synchronously: {result}"
                             )
 
                         result = cast("GraphQLExecutionResult", result)  # type: ignore[redundant-cast]
