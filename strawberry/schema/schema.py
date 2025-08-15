@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import logging
+
 import warnings
 from asyncio import ensure_future
 from collections.abc import AsyncGenerator, AsyncIterator, Awaitable, Iterable
@@ -95,6 +97,9 @@ if TYPE_CHECKING:
     from strawberry.types.field import StrawberryField
     from strawberry.types.scalar import ScalarDefinition, ScalarWrapper
     from strawberry.types.union import StrawberryUnion
+
+logger = logging.getLogger("strawberry.execution")
+
 
 SubscriptionResult: TypeAlias = AsyncGenerator[
     Union[PreExecutionError, ExecutionResult], None
@@ -756,6 +761,8 @@ class Schema(BaseSchema):
                             execution_context_class=self.execution_context_class,
                             **custom_context_kwargs,
                         )
+                        logger.info(result)
+
 
                         if isawaitable(result):
                             result = cast("Awaitable[GraphQLExecutionResult]", result)  # type: ignore[redundant-cast]
